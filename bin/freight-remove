@@ -68,7 +68,7 @@ do
                 BIN_NAME="$(dpkg-deb -I $file | egrep -i 'Package:' | cut -d: -f2- | awk '{print $1}')"
                 if echo $BIN_NAME | grep -i $PACKAGE
                 then
-                    echo "Removed $file"
+                    echo "# [freight] Removed $file"
                     rm ${file}
                     rm ${file}-control &> /dev/null || true
                 fi
