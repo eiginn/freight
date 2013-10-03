@@ -69,7 +69,8 @@ do
                 if echo $BIN_NAME | grep -i $PACKAGE
                 then
                     echo "Removed $file"
-                    rm $file
+                    rm ${file}
+                    rm ${file}-control &> /dev/null || true
                 fi
         done
 done
