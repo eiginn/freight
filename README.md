@@ -56,4 +56,3 @@ Freight is [BSD-licensed](https://github.com/rcrowley/freight/blob/master/LICENS
 * Source code: <https://github.com/rcrowley/freight>
 * Issue tracker: <https://github.com/rcrowley/freight/issues>
 * Wiki: <https://github.com/rcrowley/freight/wiki>
-[![Stories in Ready](https://badge.waffle.io/eiginn/freight.png?label=ready)](http://waffle.io/eiginn/freight)
