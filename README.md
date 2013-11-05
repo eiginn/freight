@@ -1,4 +1,3 @@
-[![Stories in Ready](https://badge.waffle.io/eiginn/freight.png?label=ready)](https://waffle.io/eiginn/freight)  
 # Freight
 
 A modern take on the Debian archive.
