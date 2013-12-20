@@ -1,0 +1,52 @@
+#!/bin/bash
+
+# Prune the Freight library.
+
+#/ Usage: freight prune
+#/  no options
+#/  Governed by KEEP_FILES variable in freight conf
+
+usage() { grep "^#/" "$0" | cut -c"4-" >&2; }
+
+die() {
+    echo "$@" >&2
+    usage
+    exit 1
+}
+
+. "$(dirname $(dirname $0))/lib/freight/conf.sh"
+. "/usr/lib/freight/apt.sh"
+
+[[ $KEEP_FILES ]] || die "KEEP_FILES must be defined with the number of packages to keep in freight conf"
+
+unset packages
+unset files
+declare -A packages
+declare -a files
+
+# find every deb file in a dist
+for file in $(find $VARLIB/apt/squeeze -name "*$PACKAGE*deb" -type f -print); do
+    # get actual package name from deb
+    pkg_name="$(dpkg-deb -I $file 2> /dev/null | egrep -i 'Package:' | cut -d: -f2- | awk '{print $1}')"
+    # add each file to named index for that package
+    packages["${pkg_name}"]+=" ${file}"
+    # add all files to array for counting
+    files+=("${file}")
+done
+
+total_size=0
+# iterate over each package group
+for i in ${!packages[@]}; do
+    #echo "=== $i ==="
+    # one day we may use "dpkg --compare-versions" but for "sort -V" seems to work
+    remove_list="$(echo ${packages[$i]} | sed -e 's/\s\+/\n/g' | sort -Vr | tail -n +$(( ${KEEP_FILES} + 1 )) | sed 's/\n/ /g')"
+    # iterate over each file in remove_list
+    for a in ${remove_list}; do
+        total_size=$(($total_size + $(stat -c '%s' $a)))
+        #rm "${a}"
+    done
+done
+echo "Total removed: $(echo $total_size | awk '{ foo = $1 / 1024 / 1024 ; print foo "MB" }')"
+
+echo "Number of files ${#files[@]}"
+echo "Number of package groups ${#packages[@]}"

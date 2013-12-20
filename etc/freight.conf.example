@@ -21,3 +21,6 @@ GPG="example@example.com"
 # Whether to follow symbolic links in `$VARLIB` to produce extra components
 # in the cache directory (on) or not (off).
 SYMLINKS="off"
+
+# Number of versions to keep of each package
+KEEP_FILES="10"
