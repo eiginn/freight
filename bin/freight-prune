@@ -44,11 +44,12 @@ for dist in squeeze wheezy; do
         # iterate over each file in remove_list
         for a in ${remove_list}; do
             total_size=$((${total_size} + $(stat -c '%s' $a)))
-            #rm "${a}"
+            # And finally do the deed
+            rm "${a}" && echo "# [freight] removed ${a}" || echo "# [freight] failed to remove ${a}"
         done
     done
-    echo "Total removed in ${dist}: $(echo ${total_size} | awk '{ foo = $1 / 1024 / 1024 ; print foo "MB" }')"
+    echo "# [freight] Total removed in ${dist}: $(echo ${total_size} | awk '{ foo = $1 / 1024 / 1024 ; print foo "MB" }')"
 
-    echo "Number of files in ${dist} before removal: ${#files[@]}"
-    echo "Number of packages (not versions) in ${dist}: ${#packages[@]}"
+    echo "# [freight] Number of files in ${dist} before removal: ${#files[@]}"
+    echo "# [freight] Number of packages (not versions) in ${dist}: ${#packages[@]}"
 done
