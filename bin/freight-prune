@@ -19,6 +19,8 @@ die() {
 
 [[ $KEEP_FILES ]] || die "KEEP_FILES must be defined with the number of packages to keep in freight conf"
 
+echo "# [freight] Finding old packages to remove, keeping newest $KEEP_FILES package versions"
+
 for dist in squeeze wheezy; do
     unset packages
     unset files
